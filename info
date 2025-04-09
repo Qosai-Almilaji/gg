@@ -1,0 +1,72 @@
+Event Name	Service	Category	Description	Severity (if known)	Notes 
+DHCPDISCOVER	DHCP	dhcpd	Client broadcasting to find a DHCP server	Info	Start of DHCP handshake
+DHCPOFFER	DHCP	dhcpd	Server offering IP address to client	Info	Sent in response to DHCPDISCOVER
+DHCPREQUEST	DHCP	dhcpd	Client requesting the offered IP address	Info	Second step in lease negotiation
+DHCPACK	DHCP	dhcpd	Server acknowledges and confirms lease	Info	Lease is now active
+DHCPDECLINE	DHCP	dhcpd	Client rejects offered IP (e.g., conflict detected)	Warning	May indicate IP conflict
+DHCPRELEASE	DHCP	dhcpd	Client releasing previously leased IP	Info	End of lease
+DHCPINFORM	DHCP	dhcpd	Client requesting config info without IP assignment	Info	Used by statically configured clients
+query	DNS	client	DNS query received from client	Info	Query logging; may be noisy if enabled
+query (cache)	DNS	client	DNS query answered from cache	Info	Helps monitor cache efficiency
+denied recursion	DNS	security	Recursive query blocked due to config/policy	Warning	May indicate probing from unauthorized IPs
+dynamic update	DNS	update	Dynamic DNS record update attempted	Info / Warning	Track changes in DNS entries
+lame server	DNS	lame_servers	Upstream DNS delegation issue	Warning	May indicate external DNS issues
+zone transfer	DNS	notify/transfer-*	DNS zone transfer activity (in or out)	Info	Useful for tracking replication
+policy triggered	DNS	rpz	DNS query blocked or redirected via RPZ	Info / Alert	Security enforcement logging
+modified query	DNS	query_rewrite	Query rewritten by Infoblox policy	Info	DNS manipulation (e.g., rewrites)
+					
+🔹 DNS Event Names				🔸 DHCP Event Names	
+					
+1. client: query				1. dhcpd: DHCPDISCOVER	
+Logs DNS queries received from clients.				Client broadcasted a discovery packet for IP address.	
+					
+2. client: query (cache)				2. dhcpd: DHCPOFFER	
+Logs DNS queries answered from cache.				Server offered an IP lease to a client.	
+					
+3. resolver: query response				3. dhcpd: DHCPREQUEST	
+Logs responses received from upstream DNS servers.				Client requested the offered IP lease.	
+					
+4. security: denied recursion				4. dhcpd: DHCPACK	
+Indicates recursion was denied due to policy or security settings.				Server acknowledged and finalized IP lease.	
+					
+5. update: dynamic update				5. dhcpd: DHCPDECLINE	
+Logs attempts to dynamically update DNS records.				Client declined the IP lease (usually due to conflict).	
+					
+6. lame_servers: lame server				6. dhcpd: DHCPRELEASE	
+Indicates a bad delegation or misconfigured DNS server.				Client released the IP lease back to the server.	
+					
+7. notify: zone transfer				7. dhcpd: DHCPINFORM	
+Logs DNS NOTIFY messages sent to secondary servers.				Client requested additional configuration (without needing an IP).	
+					
+8. dnssec: validation				8. omshell: remote command	
+Logs DNSSEC signing or validation operations.				Logs remote DHCP management operations.	
+					
+9. query_rewrite: modified query				9. dhcrelay: relayed message	
+Indicates a query was rewritten per policy rules.				Logs requests or replies relayed through DHCP relay agent.	
+					
+10. rpz: policy triggered				10. dhclient: lease activity	
+Indicates that a DNS query matched an RPZ rule.				Logs lease requests or renewals from client side.	
+					
+11. transfer-in					
+Logs zone transfers received from other servers.					
+					
+12. transfer-out					
+Logs zone transfers sent to other servers.					
+					
+13. config: file parsed					
+Indicates a DNS config file was parsed or reloaded.					
+					
+14. database: internal change					
+Logs database changes within the DNS service.					
+					
+15. network: communication issue					
+Logs network-level errors or drops.					
+					
+16. general: system info					
+Captures general operational messages.					
+					
+17. update-security: policy result					
+Indicates success or failure of security checks during dynamic updates.					
+					
+18. rate-limit: throttled response					
+Logs when rate limiting (RRL) was applied.					
